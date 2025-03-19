@@ -11,7 +11,7 @@ Pertama, fungsi ini membuat `BufReader` untuk membaca stream (dengan buffering d
 
 </details>
 
-<details open>
+<details>
 <summary>Reflection 2</summary>
 
 ![Commit 2 screen capture](/assets/images/commit2.png)
@@ -26,3 +26,17 @@ stream.write_all(response.as_bytes()).unwrap();
 Terakhir, akan dikirimkan respons tersebut ke client melalui jaringan `TcpStream`. Sehingga pada client terdapat halaman `Hello.html`.
 
 </details>
+
+<details open>
+<summary>Reflection 3</summary>
+
+![Commit 3 screen capture](/assets/images/commit3.png)
+
+Pada kode `handle_connection()` yang baru, pertama-tama terdapat penghapusan penggunaan `Vec<_>` yang sebelumnya dilakukan untuk menyimpan keseluruhan *request* HTTP. Sekarang digunakan variabel `request_line` yang hanya akan menyimpan baris pertama dari *request*.
+
+Lalu pada kode baru respons dari server akan berbeda berdasarkan *request* client, jika request berupa "GET / HTTP/1.1" maka server akan memberikan respons HTTP "HTTP/1.1 200 OK" dan tampilan berupa file `hello.html`. Selain itu, akan diberikan respons HTTP "HTTP/1.1 404 NOT FOUND" dengan tampilan `404.html`.
+
+Pada implementasi `handle_connection()` yang awal, kode dipisahkan di awal dengan sebuah *if-else block* hingga akhir. Dengan *refactoring*, *if-else block* hanya dilakukan di awal untuk menentukan variabel `status_line` dan `filename`. Setelah itu dilakukan pembuatan 3 variabel untuk memberikan respons dan respons diberikan. *Refactoring* yang dilakukan mengurangi duplikasi kode sehingga kedepannya *maintainability* lebih mudah dilakukan.
+
+</details>
+
