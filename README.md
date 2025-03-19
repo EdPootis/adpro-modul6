@@ -27,7 +27,7 @@ Terakhir, akan dikirimkan respons tersebut ke client melalui jaringan `TcpStream
 
 </details>
 
-<details open>
+<details>
 <summary>Reflection 3</summary>
 
 ![Commit 3 screen capture](/assets/images/commit3.png)
@@ -40,3 +40,11 @@ Pada implementasi `handle_connection()` yang awal, kode dipisahkan di awal denga
 
 </details>
 
+<details open>
+<summary>Reflection 4</summary>
+
+Pada kode yang baru pemilihan *if-else block* diubah menjadi *match* (seperti *switch case*) untuk menambahkan *case* baru jika diakses endpoint `/sleep`. Hal ini juga membuat kode semakin rapih dibandingkan jika digunakan *if-else if-else block*.
+
+Pada endpoint `/sleep`, akan terjadi *sleep* yang akan menunda eksekusi kode selama 10 detik, sehingga client akan menerima respons 10 detik setelah mengakses endpoint. Hal ini mengsimulasikan skenario di mana server memproses banyak permintaan dari berbagai klien sehingga membutuhkan waktu yang lama untuk seorang klien untuk menerima respons. Hal ini akan semakin terasa jika server menggunakan arsitektur *single-threaded* di mana server tidak dapat menangani banyak permintaan secara bersamaan.
+
+</details>
