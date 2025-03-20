@@ -40,11 +40,22 @@ Pada implementasi `handle_connection()` yang awal, kode dipisahkan di awal denga
 
 </details>
 
-<details open>
+<details>
 <summary>Reflection 4</summary>
 
 Pada kode yang baru pemilihan *if-else block* diubah menjadi *match* (seperti *switch case*) untuk menambahkan *case* baru jika diakses endpoint `/sleep`. Hal ini juga membuat kode semakin rapih dibandingkan jika digunakan *if-else if-else block*.
 
 Pada endpoint `/sleep`, akan terjadi *sleep* yang akan menunda eksekusi kode selama 10 detik, sehingga client akan menerima respons 10 detik setelah mengakses endpoint. Hal ini mengsimulasikan skenario di mana server memproses banyak permintaan dari berbagai klien sehingga membutuhkan waktu yang lama untuk seorang klien untuk menerima respons. Hal ini akan semakin terasa jika server menggunakan arsitektur *single-threaded* di mana server tidak dapat menangani banyak permintaan secara bersamaan.
+
+</details>
+
+<details open>
+<summary>Reflection 5</summary>
+
+Pada kode yang baru, server menangani *request* menggunakan `ThreadPool` sehingga tidak lagi merupakan *single-threaded server* yang perlu menunggu untuk setiap *request*, melainkan beberapa *request* dapat dijalankan secara paralel dan tidak menghambat *request* lainnya.
+
+Cara kerja `ThreadPool` dimulai dengan inisialisasinya menggunakan `ThreadPool::new(4)`, yang membuat 4 *worker threads*, jumlah *thread* dibatasi sehingga sistem tidak akan kehabisan resource jika ada DoS. Jika ada *request* yang masuk, maka `pool.execute(|| { handle_connection(stream); })` akan mengirimkan tugas ke antrian tugas (`mpsc::channel`) yang kemudian akan dieksekusi paralel oleh *worker*. Cara kerja *worker* bekerja adalah dengan membuat *thread*, dan melalui loop `receiver.lock().unwrap().recv()`, ia menunggu tugas masuk dan menjalankannya jika ada.
+
+Dengan perubahan kode, server dapat menangani banyak koneksi secara bersamaan (tidak harus menunggu *request* yang lambat) dan server lebih efisien dalam menangani *request* (karena tidak harus menangani *request* secara berurutan)
 
 </details>
