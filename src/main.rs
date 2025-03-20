@@ -9,7 +9,18 @@ use hello::ThreadPool;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-    let pool = ThreadPool::new(4);
+    // let pool = ThreadPool::new(4);
+    let pool = match ThreadPool::build(4) {
+        Ok(pool) => {
+            println!("ThreadPool created successfully!");
+            pool
+        }
+        Err(e) => {
+            println!("Failed to create ThreadPool: {}", e);
+            return; // Exit the program if the ThreadPool creation fails
+        }
+    };
+
 
     for stream in listener.incoming().take(2) {
         let stream = stream.unwrap();

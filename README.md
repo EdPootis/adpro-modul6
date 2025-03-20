@@ -49,8 +49,8 @@ Pada endpoint `/sleep`, akan terjadi *sleep* yang akan menunda eksekusi kode sel
 
 </details>
 
-<details open>
-<summary>Reflection 5</summary>
+<details>
+<summary> Reflection 5</summary>
 
 Pada kode yang baru, server menangani *request* menggunakan `ThreadPool` sehingga tidak lagi merupakan *single-threaded server* yang perlu menunggu untuk setiap *request*, melainkan beberapa *request* dapat dijalankan secara paralel dan tidak menghambat *request* lainnya.
 
@@ -59,3 +59,13 @@ Cara kerja `ThreadPool` dimulai dengan inisialisasinya menggunakan `ThreadPool::
 Dengan perubahan kode, server dapat menangani banyak koneksi secara bersamaan (tidak harus menunggu *request* yang lambat) dan server lebih efisien dalam menangani *request* (karena tidak harus menangani *request* secara berurutan)
 
 </details>
+
+<details open>
+<summary>Bonus Reflection</summary>
+
+Pada kode yang baru, ditambahkan fungsi `build()` untuk pembuatan `ThreadPool` dengan ErrorHandling. Sebelumnya digunakan `ThreadPool::new(size)` yang akan *panic* jika `size == 0`, tetapi sekarang dengan ditambahkan metode `ThreadPool::build(size) -> Result<ThreadPool, PoolCreationError>`, yang mengembalikan `Result`, jika ukuran lebih dari 0 maka akan dikembalikan
+`Ok(ThreadPool)`. Jika ukuran adalah 0, maka dikembalikan `Err(PoolCreationError::ZeroSize)`. Dengan ini `ThreadPool` dapat menangani kesalahan dengan lebih baik tanpa harus *panic* dan menyebabkan crash.
+
+Untuk membuat error yang baru tersebut, juga dibuat `PoolCreationError` yang merupakan enum yang dapat menampilkan pesan error dengan lebih informatif.
+</details>
+
